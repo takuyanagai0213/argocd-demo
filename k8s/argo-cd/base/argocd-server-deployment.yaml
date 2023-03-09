@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argo-cd-server
+spec:
+  template:
+    spec:
+      containers:
+        - name: server
+          command:
+            - argocd-server
+            # NOTE: patched. https://github.com/argoproj/argo-cd/issues/2593#issuecomment-563987352
+            - --staticassets
+            - /shared/app
+            - --insecure

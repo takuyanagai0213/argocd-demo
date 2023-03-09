@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/takuyanagai0213/argocd-demo
+      targetRevision: main
+      path: k8s/argocd/overlays/staging
+    - repoURL: https://github.com/takuyanagai0213/argocd-demo
+      targetRevision: main
+      path: k8s/cd/overlays/staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-api
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/takuyanagai0213/argocd-demo
+      targetRevision: main
+      path: k8s/demo/api/overlays/staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: demo-api
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-workflow
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/takuyanagai0213/argocd-demo
+      targetRevision: main
+      path: k8s/demo/workflow/overlays/staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: demo-workflow
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
